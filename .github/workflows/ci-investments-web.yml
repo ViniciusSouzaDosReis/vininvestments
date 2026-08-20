@@ -1,0 +1,51 @@
+name: Investments Web
+
+on:
+  pull_request:
+    paths:
+      - "apps/investments/**"
+      - "scripts/deploy/**"
+      - "Makefile"
+      - ".github/workflows/ci-investments-web.yml"
+  push:
+    branches: [main]
+    paths:
+      - "apps/investments/**"
+      - "scripts/deploy/**"
+      - "Makefile"
+      - ".github/workflows/ci-investments-web.yml"
+
+jobs:
+  build:
+    name: Validate Investments
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/investments
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/investments/package-lock.json
+      - run: npm ci
+      - run: npm run build
+
+  deploy:
+    name: Deploy Investments
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Deploy through the provider adapter
+        run: make deploy-investments
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_INVESTMENTS_PROJECT_ID: ${{ secrets.RAILWAY_INVESTMENTS_PROJECT_ID }}
+          RAILWAY_INVESTMENTS_SERVICE_ID: ${{ secrets.RAILWAY_INVESTMENTS_SERVICE_ID }}
