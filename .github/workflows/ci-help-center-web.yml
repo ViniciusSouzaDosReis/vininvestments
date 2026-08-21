@@ -1,12 +1,6 @@
 name: Help Center Web
 
 on:
-  pull_request:
-    paths:
-      - "apps/help-center/**"
-      - "scripts/deploy/**"
-      - "Makefile"
-      - ".github/workflows/ci-help-center-web.yml"
   push:
     branches: [main]
     paths:
@@ -43,7 +37,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 22
-      - name: Deploy through the provider adapter
+      - name: Deploy
         run: make deploy-help-center
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}

@@ -1,12 +1,6 @@
 name: Investments Web
 
 on:
-  pull_request:
-    paths:
-      - "apps/investments/**"
-      - "scripts/deploy/**"
-      - "Makefile"
-      - ".github/workflows/ci-investments-web.yml"
   push:
     branches: [main]
     paths:
@@ -43,7 +37,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 22
-      - name: Deploy through the provider adapter
+      - name: Delpoy
         run: make deploy-investments
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
