@@ -1,0 +1,107 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   Vini Investments — Design System (Ajustes)
+   Cópia deliberada dos tokens do app de investimentos: os apps são
+   independentes e não compartilham código.
+   Dark mode pastel: pretos neutros como base, verdes sage como cor de marca,
+   família de apoio areia/terracota/creme. Nada de neon.
+   ========================================================================== */
+
+@theme {
+  /* --- Superfícies: pretos neutros, 4 degraus de elevação --- */
+  --color-canvas: #0d0d0d;
+  --color-surface-1: #171717;
+  --color-surface-2: #1f1f1f;
+  --color-surface-3: #2a2a2a;
+  --color-line: #2e2e2e;
+  --color-line-soft: #232323;
+
+  /* --- Verde sage: cor primária da marca --- */
+  --color-sage-50: #f0f6ed;
+  --color-sage-100: #e1eedc;
+  --color-sage-200: #c2ddba;
+  --color-sage-300: #9ccb93;
+  --color-sage-400: #7ab271;
+  --color-sage-500: #5b9455;
+  --color-sage-600: #45743f;
+  --color-sage-900: #1d2a1b;
+
+  /* --- Família pastel de apoio --- */
+  --color-sand: #e4cd92;
+  --color-sand-deep: #c9ad6e;
+  --color-clay: #d69279;
+  --color-clay-deep: #b97155;
+  --color-cream: #ebe8de;
+
+  /* --- Texto: cinzas neutros --- */
+  --color-ink: #ededed;
+  --color-ink-muted: #9b9b9b;
+  --color-ink-faint: #6a6a6a;
+
+  /* --- Tipografia --- */
+  --font-sans: 'Outfit', ui-sans-serif, system-ui, sans-serif;
+
+  /* --- Raios: o traço mais forte da identidade --- */
+  --radius-card: 2rem; /* card externo   32px */
+  --radius-panel: 1.5rem; /* card aninhado  24px */
+  --radius-bar: 1.25rem; /* barras         20px */
+  --radius-chip: 0.875rem; /* chips          14px */
+}
+
+/* --------------------------------------------------------------------------
+   Utilitários próprios do design system
+   -------------------------------------------------------------------------- */
+
+/* Hachura diagonal 45° dos trilhos vazios — assinatura do estilo */
+@utility hatch {
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.045) 0px,
+    rgba(255, 255, 255, 0.045) 1.5px,
+    transparent 1.5px,
+    transparent 7px
+  );
+}
+
+/* Glow radial suave atrás dos ícones circulares — dessaturado, nunca neon */
+@utility glow-sage {
+  box-shadow: 0 0 28px -6px --alpha(var(--color-sage-300) / 45%);
+}
+@utility glow-sand {
+  box-shadow: 0 0 28px -6px --alpha(var(--color-sand) / 45%);
+}
+@utility glow-clay {
+  box-shadow: 0 0 28px -6px --alpha(var(--color-clay) / 45%);
+}
+
+/* Numerais tabulares para valores monetários alinharem em coluna */
+@utility tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+}

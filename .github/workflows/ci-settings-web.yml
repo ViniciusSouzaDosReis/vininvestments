@@ -1,0 +1,45 @@
+name: Settings Web
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/settings/**"
+      - "scripts/deploy/**"
+      - "Makefile"
+      - ".github/workflows/ci-settings-web.yml"
+
+jobs:
+  build:
+    name: Validate Settings
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/settings
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/settings/package-lock.json
+      - run: npm ci
+      - run: npm run build
+
+  deploy:
+    name: Deploy Settings
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Delpoy
+        run: make deploy-settings
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_SETTINGS_PROJECT_ID: ${{ secrets.RAILWAY_SETTINGS_PROJECT_ID }}
+          RAILWAY_SETTINGS_SERVICE_ID: ${{ secrets.RAILWAY_SETTINGS_SERVICE_ID }}
