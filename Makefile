@@ -3,12 +3,13 @@
 APP ?=
 ENV ?= production
 
-.PHONY: help deploy deploy-investments deploy-help-center
+.PHONY: help deploy deploy-investments deploy-help-center deploy-settings
 
 help:
 	@printf '%s\n' \
 	  'make deploy APP=investments ENV=production' \
-	  'make deploy APP=help-center ENV=production'
+	  'make deploy APP=help-center ENV=production' \
+	  'make deploy APP=settings ENV=production'
 
 deploy:
 	@test -n "$(APP)" || (printf '%s\n' 'APP is required: make deploy APP=investments' >&2; exit 2)
@@ -19,3 +20,6 @@ deploy-investments:
 
 deploy-help-center:
 	@$(MAKE) deploy APP=help-center ENV=$(ENV)
+
+deploy-settings:
+	@$(MAKE) deploy APP=settings ENV=$(ENV)

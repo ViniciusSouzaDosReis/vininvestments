@@ -5,6 +5,7 @@
  */
 
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { Link } from 'react-router'
 
 /* Ícones de traço, viewBox 24. Cada entrada é a lista de paths do desenho —
    mantém tudo em um arquivo só, sem virar um componente por ícone. */
@@ -63,7 +64,7 @@ const MENU = [
 ]
 
 const MENU_CONTA = [
-  { nome: 'Ajustes', icone: 'ajustes' },
+  { nome: 'Ajustes', icone: 'ajustes', to: '/settings' },
   { nome: 'Integrações', icone: 'integracoes', acao: '+' },
 ]
 
@@ -618,19 +619,29 @@ function Dashboard({ aoSair }: { aoSair: () => void }) {
             Conta
           </p>
           <nav className="flex flex-col gap-0.5">
-            {MENU_CONTA.map((item) => (
-              <a
-                key={item.nome}
-                href="#"
-                className="flex items-center gap-3 rounded-chip px-2.5 py-2.5 text-[13.5px] text-ink-muted transition hover:bg-surface-2 hover:text-ink"
-              >
-                <Icone nome={item.icone} />
-                {item.nome}
-                {item.acao && (
-                  <span className="ml-auto text-[15px] text-ink-faint">{item.acao}</span>
-                )}
-              </a>
-            ))}
+            {MENU_CONTA.map((item) => {
+              const conteudo = (
+                <>
+                  <Icone nome={item.icone} />
+                  {item.nome}
+                  {item.acao && (
+                    <span className="ml-auto text-[15px] text-ink-faint">{item.acao}</span>
+                  )}
+                </>
+              )
+              const className =
+                'flex items-center gap-3 rounded-chip px-2.5 py-2.5 text-[13.5px] text-ink-muted transition hover:bg-surface-2 hover:text-ink'
+
+              return item.to ? (
+                <Link key={item.nome} to={item.to} className={className}>
+                  {conteudo}
+                </Link>
+              ) : (
+                <a key={item.nome} href="#" className={className}>
+                  {conteudo}
+                </a>
+              )
+            })}
           </nav>
         </div>
 
