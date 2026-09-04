@@ -3,13 +3,14 @@
 APP ?=
 ENV ?= production
 
-.PHONY: help deploy deploy-investments deploy-help-center deploy-settings
+.PHONY: help deploy deploy-investments deploy-help-center deploy-settings deploy-gateway
 
 help:
 	@printf '%s\n' \
 	  'make deploy APP=investments ENV=production' \
 	  'make deploy APP=help-center ENV=production' \
-	  'make deploy APP=settings ENV=production'
+	  'make deploy APP=settings ENV=production' \
+	  'make deploy APP=gateway ENV=production'
 
 deploy:
 	@test -n "$(APP)" || (printf '%s\n' 'APP is required: make deploy APP=investments' >&2; exit 2)
@@ -23,3 +24,6 @@ deploy-help-center:
 
 deploy-settings:
 	@$(MAKE) deploy APP=settings ENV=$(ENV)
+
+deploy-gateway:
+	@$(MAKE) deploy APP=gateway ENV=$(ENV)

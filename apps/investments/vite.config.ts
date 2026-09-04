@@ -7,6 +7,11 @@ import { federation } from '@module-federation/vite'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'VITE_')
 
+  if (!env.VITE_REMOTE_SETTINGS) {
+    throw new Error(
+      'VITE_REMOTE_SETTINGS não está definida — o remote "settings" viraria "settings@undefined" e só quebraria em runtime no browser.',
+    )
+  }
 
   return {
     plugins: [react(), tailwindcss(), federation({

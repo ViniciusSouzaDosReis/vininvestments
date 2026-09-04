@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-app="${1:?Usage: railway.sh <investments|help-center|settings> [environment]}"
+app="${1:?Usage: railway.sh <investments|help-center|settings|gateway> [environment]}"
 environment="${2:-production}"
 
 case "$app" in
@@ -20,8 +20,13 @@ case "$app" in
     project_id="${RAILWAY_SETTINGS_PROJECT_ID:-}"
     service_id="${RAILWAY_SETTINGS_SERVICE_ID:-}"
     ;;
+  gateway)
+    source_dir="apps/gateway"
+    project_id="${RAILWAY_GATEWAY_PROJECT_ID:-}"
+    service_id="${RAILWAY_GATEWAY_SERVICE_ID:-}"
+    ;;
   *)
-    printf 'Unknown app: %s. Use investments, help-center or settings.\n' "$app" >&2
+    printf 'Unknown app: %s. Use investments, help-center, settings or gateway.\n' "$app" >&2
     exit 2
     ;;
 esac

@@ -1,0 +1,39 @@
+name: Gateway Web
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/gateway/**"
+      - "scripts/deploy/**"
+      - "Makefile"
+      - ".github/workflows/ci-gateway-web.yml"
+
+jobs:
+  build:
+    name: Validate Gateway
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/gateway
+    steps:
+      - uses: actions/checkout@v6
+      - run: docker build .
+
+  deploy:
+    name: Deploy Gateway
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Deploy
+        run: make deploy-gateway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_GATEWAY_PROJECT_ID: ${{ secrets.RAILWAY_GATEWAY_PROJECT_ID }}
+          RAILWAY_GATEWAY_SERVICE_ID: ${{ secrets.RAILWAY_GATEWAY_SERVICE_ID }}

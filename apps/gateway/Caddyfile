@@ -1,0 +1,26 @@
+# Origem única pra todos os MFEs: Railway termina TLS na borda e encaminha
+# HTTP puro pra cá, então o Caddy não deve tentar gerenciar certificado.
+{
+	auto_https off
+}
+
+:{$PORT} {
+	log {
+		output stdout
+		format console
+	}
+
+	# Remote de Module Federation do settings. handle_path descarta o
+	# prefixo /mfe/settings antes de repassar, porque o build do settings
+	# serve seus próprios arquivos (mf-manifest.json, remoteEntry.js,
+	# assets) a partir da raiz dele.
+	handle_path /mfe/settings/* {
+		reverse_proxy {$SETTINGS_UPSTREAM}
+	}
+
+	# Tudo que sobrar (SPA do investments, incluindo o fallback de rotas
+	# client-side) vai pro host.
+	handle {
+		reverse_proxy {$INVESTMENTS_UPSTREAM}
+	}
+}
