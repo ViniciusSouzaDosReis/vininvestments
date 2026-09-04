@@ -6,7 +6,7 @@
 
 import { Link } from 'react-router'
 
-function Settings({ aoSair }: { aoSair: () => void }) {
+function Settings({ onLogout }: { onLogout: () => void }) {
   return (
     <div className="mx-auto flex min-h-full max-w-[1700px] flex-col items-center justify-center gap-4 bg-canvas p-4 sm:p-5">
       <div className="w-full max-w-[440px] rounded-card bg-surface-1 p-8 text-center ring-1 ring-line">
@@ -24,7 +24,7 @@ function Settings({ aoSair }: { aoSair: () => void }) {
           </Link>
           <button
             type="button"
-            onClick={aoSair}
+            onClick={onLogout}
             className="rounded-full bg-surface-2 px-5 py-3 text-[13px] font-medium text-ink ring-1 ring-line transition hover:bg-surface-3"
           >
             Sair
